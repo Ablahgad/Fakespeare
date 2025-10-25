@@ -37,20 +37,23 @@
 
       /* ---------- PAGE CONTENT ---------- */
       .container {
-        max-width: 600px;
+        max-width: 700px;
         background: #fff;
         margin: 2rem auto;
         padding: 2rem;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
-      h1 {
+      h1, h2 {
         text-align: center;
         margin-bottom: 1rem;
       }
-      p {
+      p, li {
         line-height: 1.6;
         color: #333;
+      }
+      ul {
+        margin-left: 1.2rem;
       }
 
       footer {
@@ -73,23 +76,40 @@
 
     <div class="container">
       <h1>About This App</h1>
+
       <p>
-        The Text-to-Audio Generator is a simple web interface that lets you
-        upload a text file, specify the number of voice actors, describe their
-        voices, and generate high-quality spoken audio.
+        The Text-to-Audio Generator allows you to upload a text file, specify multiple
+        voice actors, describe their voices, and generate high-quality spoken audio.
       </p>
+
+      <h2>How It Works</h2>
       <p>
-        This front-end connects to a backend API that handles text parsing and
-        text-to-speech synthesis for multiple actors.
+        After you upload a text file, the app scrapes and modifies the content into a
+        format suitable for Boson AI's Higgs "<strong>x model</strong>". This model
+        then generates the audio file using the descriptions you provided for each
+        actor.
       </p>
+
+      <h2>Instructions for Uploaded Files</h2>
       <p>
-        Built with plain HTML, CSS, and JavaScript — it’s lightweight, fast, and
-        easy to customize.
+        To ensure the best results, please follow these guidelines when uploading files:
+      </p>
+      <ul>
+        <li><strong>File types:</strong> Only <code>.txt</code> and <code>.docx</code> files are supported.</li>
+        <li><strong>Formatting:</strong> Use clear line breaks between paragraphs and dialogue for each character.</li>
+        <li><strong>Actor cues:</strong> If your script involves multiple actors, label lines or paragraphs with actor names (e.g., <code>Actor 1:</code> or <code>John:</code>).</li>
+        <li><strong>Text length:</strong> Keep individual sections concise for better voice quality. Very long paragraphs may be truncated.</li>
+        <li><strong>Special characters:</strong> Avoid excessive symbols or formatting that may confuse the model.</li>
+      </ul>
+
+      <p>
+        Following these instructions ensures that the uploaded text is properly parsed
+        and that each voice actor sounds natural in the final audio.
       </p>
     </div>
 
     <footer>
-      Have Fun
+      &copy; 2025 Text-to-Audio App
     </footer>
   </body>
 </html>

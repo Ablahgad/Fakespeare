@@ -80,6 +80,28 @@
         margin-top: 0.5rem;
       }
 
+      /* ---------- FILE UPLOAD INFO ---------- */
+      .info-section {
+        background-color: #e7f3ff;
+        border-left: 4px solid #007bff;
+        padding: 0.8rem 1rem;
+        margin-top: 0.5rem;
+        border-radius: 4px;
+        font-size: 0.95rem;
+        color: #333;
+      }
+      .info-toggle {
+        cursor: pointer;
+        color: #007bff;
+        font-weight: bold;
+        margin-top: 0.5rem;
+        display: inline-block;
+      }
+      .info-content {
+        display: none;
+        margin-top: 0.5rem;
+      }
+
       footer {
         text-align: center;
         padding: 1rem;
@@ -103,7 +125,19 @@
 
       <form id="audioForm">
         <label for="textFile">Upload Text File:</label>
-        <input type="file" id="textFile" accept=".txt" required />
+        <input type="file" id="textFile" accept=".txt,.docx" required />
+
+        <!-- File instructions tooltip -->
+        <span class="info-toggle" id="toggleInfo">Show file upload instructions ▼</span>
+        <div class="info-section info-content" id="fileInfo">
+          <ul>
+            <li><strong>File types:</strong> Only <code>.txt</code> and <code>.docx</code> are supported.</li>
+            <li><strong>Formatting:</strong> Use clear line breaks between paragraphs and dialogue for each character.</li>
+            <li><strong>Actor cues:</strong> Label lines or paragraphs with actor names (e.g., <code>Actor 1:</code> or <code>John:</code>).</li>
+            <li><strong>Text length:</strong> Keep sections concise for better voice quality.</li>
+            <li><strong>Special characters:</strong> Avoid excessive symbols or formatting that may confuse the model.</li>
+          </ul>
+        </div>
 
         <label for="numActors">Number of Actors:</label>
         <input type="number" id="numActors" min="1" value="1" />
@@ -156,8 +190,21 @@
 
       // Initialize default
       updateVoiceInputs();
-
       numActorsInput.addEventListener("change", updateVoiceInputs);
+
+      // Toggle info section
+      const toggle = document.getElementById("toggleInfo");
+      const info = document.getElementById("fileInfo");
+
+      toggle.addEventListener("click", () => {
+        if (info.style.display === "block") {
+          info.style.display = "none";
+          toggle.textContent = "Show file upload instructions ▼";
+        } else {
+          info.style.display = "block";
+          toggle.textContent = "Hide file upload instructions ▲";
+        }
+      });
 
       // Handle form submission
       form.addEventListener("submit", async (e) => {
