@@ -6,9 +6,13 @@ body {
 
 /* ---------- HEADER NAVIGATION ---------- */
 header {
-    background-color: #007bff;
-    color: white;
-    padding: 1rem 0;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/38/Parchment_texture_background.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #3b2b1c; /* deep brown ink color */
+    padding: 2rem 0;
+    text-shadow: 1px 1px 2px #f0e6d2; /* subtle glow for readability */
+    border-bottom: 3px solid #d4b483; /* gold trim */
 }
 nav {
     display: flex;
