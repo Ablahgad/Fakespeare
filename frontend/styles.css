@@ -1,9 +1,22 @@
+html{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 body {
     font-family: 'Almendra SC', serif;
     background-color: #f4f4f4;
     margin: 0;
 
     letter-spacing:1px;
+
+    font-size:20px;
+
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }
 
 /* ---------- HEADER NAVIGATION ---------- */
@@ -32,7 +45,7 @@ nav a:hover {
 
 /* ---------- PAGE CONTENT ---------- */
 .container {
-    max-width: 700px;
+    width:80vw;
     background: #d2c59f; /* soft parchment tone */
     margin: 2rem auto;
     padding: 2rem;
