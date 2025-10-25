@@ -83,3 +83,20 @@ const audioUrl = URL.createObjectURL(blob);
 document.getElementById("output").style.display = "block";
 document.getElementById("audioPlayer").src = audioUrl;
 });
+
+// Load sample script for demo page
+document.addEventListener("DOMContentLoaded", () => {
+    const scriptDisplay = document.getElementById("scriptDisplay");
+
+    fetch("TestingMultitalk/tomorrow.txt")
+        .then(response => {
+            if (!response.ok) throw new Error("Failed to load script file.");
+            return response.text();
+        })
+        .then(text => {
+            scriptDisplay.textContent = text;
+        })
+        .catch(error => {
+            scriptDisplay.textContent = "Error loading demo script: " + error.message;
+        });
+});
