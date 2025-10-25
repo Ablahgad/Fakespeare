@@ -1,4 +1,5 @@
-import openai
+from openai import OpenAI
+import base64
 import os
 import wave
 import click
@@ -15,7 +16,7 @@ If no speaker tag is present, select a suitable voice on your own."""
 @click.option(
     "--transcript",
     type=str,
-    default= r"C:\Users\ablah\repos\higgs-audio\TestingMultitalk\en_argument.txt",
+    default= r"C:\Users\ablah\repos\SAS\TestingMultitalk\tomorrow.txt",
     help="The prompt to use for generation. If not set, we will use a default prompt.",
 )
 @click.option(
@@ -24,6 +25,9 @@ If no speaker tag is present, select a suitable voice on your own."""
     default=f"./quiet_indoor.txt",
     help="The scene description prompt to use for generation. If not set, or set to `empty`, we will leave it to empty.",
 )
+
+def b64(path):
+    return base64.b64encode(open(path, "rb").read()).decode("utf-8")
 
 def main(transcript, scene_prompt):
     if os.path.exists(transcript):
@@ -89,31 +93,29 @@ def main(transcript, scene_prompt):
     transcript = "\n".join([" ".join(line.split()) for line in lines if line.strip()])
     transcript = transcript.strip()
 
-    client = openai.Client(
-        api_key=BOSON_API_KEY,
-        base_url="https://hackathon.boson.ai/v1"
-    )
 
-    # for this api, we onlu support PCM format output
-    response = client.audio.speech.create(
+    BOSON_API_KEY = os.getenv("BOSON_API_KEY")
+    client = OpenAI(api_key=BOSON_API_KEY, base_url="https://hackathon.boson.ai/v1")
+
+    resp = client.chat.completions.create(
         model="higgs-audio-generation-Hackathon",
-        voice="belinda",
-        input=transcript,
-        response_format="pcm"
+        messages=[
+            
+            {"role": "system", "content": "You are an AI assistant designed to convert text into speech. If the user's message includes a [SPEAKER*] tag, do not read out the tag and generate speech for the following text, using the specified voice. If no speaker tag is present, select a suitable voice on your own."},
+            {"role": "user", "content": transcript},
+            {"role": "system", "content": f"Generate audio following instruction: \n\n<|scene_desc_start|>\n It is AUDIBLY raining \n SPEAKER1: masculine\nSPEAKER2: feminine \n <|scene_desc_end|>"},
+        ],
+        modalities=["text", "audio"],
+        max_completion_tokens=4096,
+        temperature=1.0,
+        top_p=0.95,
+        stream=False,
+        stop=["<|eot_id|>", "<|end_of_text|>", "<|audio_eos|>"],
+        extra_body={"top_k": 50},
     )
 
-    # You can use these parameters to write PCM data to a WAV file
-    num_channels = 1        
-    sample_width = 2        
-    sample_rate = 24000   
-
-    pcm_data = response.content
-
-    with wave.open('belinda_test.wav', 'wb') as wav:
-        wav.setnchannels(num_channels)
-        wav.setsampwidth(sample_width)
-        wav.setframerate(sample_rate)
-        wav.writeframes(pcm_data)
+    audio_b64 = resp.choices[0].message.audio.data
+    open("output.wav", "wb").write(base64.b64decode(audio_b64))
 
 if __name__ == "__main__":
-    main()
+    main(r"C:\Users\ablah\repos\SAS\TestingMultitalk\tomorrow.txt","./quiet_indoor.txt")
