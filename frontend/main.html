@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Text-to-Audio Generator</title>
+    <title>Text-to-Audio Generator </title>
     <meta name="description" content="Upload text and generate audio with custom voices" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
@@ -15,12 +15,9 @@
     <!-- HEADER NAVIGATION -->
     <header>
       <nav>
-        <p class="header-text" id="title-text">Fakespeare</p>
-        <div id="header-right">
-          <a class="header-text" href="main.html">Home</a>
-          <a class="header-text" href="about.html">About</a>
-          <a class="header-text" href="demo.html">Demo</a>
-        </div>
+        <a href="main.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="demo.html">Demo</a>
       </nav>
     </header>
 
@@ -28,11 +25,11 @@
       <h1>Text-to-Audio Generator</h1>
 
       <form id="audioForm">
-        <label for="textFile">Upload Text File:</label>
+        <label for="textFile">Upload your script:</label>
         <input type="file" id="textFile" accept=".txt,.docx" required />
 
         <!-- File instructions tooltip -->
-        <span class="info-toggle" id="toggleInfo">Show file upload instructions ▼</span>
+        <span class="info-toggle" id="toggleInfo">Hark! What File Type Can I Upload?▼</span>
         <div class="info-section info-content" id="fileInfo">
           <ul>
             <li><strong>File types:</strong> Only <code>.txt</code> and <code>.docx</code> are supported.</li>
@@ -61,7 +58,7 @@
     </div>
 
     <footer>
-      Have Fun
+      Has't a valorous time!
     </footer>
 
     <script src="script.js"></script>
