@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Text-to-Audio Generator</title>
+    <meta name="description" content="Upload text and generate audio with custom voices">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 2rem;
+      }
+      .container {
+        max-width: 600px;
+        background: #fff;
+        margin: 0 auto;
+        padding: 2rem;+
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+      label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: bold;
+      }
+      input, textarea, button {
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        margin-top: 1rem;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      audio {
+        width: 100%;
+        margin-top: 1rem;
+      }
+      .browsehappy {
+        background: #ffcc00;
+        padding: 1rem;
+        text-align: center;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser.
+        Please <a href="#">upgrade your browser</a> to improve your experience.
+      </p>
+    <![endif]-->
+
+    <div class="container">
+      <h1>Text-to-Audio Generator</h1>
+
+      <form id="audioForm">
+        <label for="textFile">Upload Text File:</label>
+        <input type="file" id="textFile" accept=".txt" required>
+
+        <label for="numActors">Number of Actors:</label>
+        <input type="number" id="numActors" min="1" value="1">
+
+        <label for="voiceDescriptions">Voice Descriptions:</label>
+        <textarea id="voiceDescriptions" rows="3" placeholder="e.g. Actor 1: deep male voice, Actor 2: cheerful female voice"></textarea>
+
+        <button type="submit">Generate Audio</button>
+      </form>
+
+      <div id="output" style="display:none;">
+        <h2>Generated Audio</h2>
+        <audio controls id="audioPlayer"></audio>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById('audioForm');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const fileInput = document.getElementById('textFile');
+        const numActors = document.getElementById('numActors').value;
+        const voiceDescriptions = document.getElementById('voiceDescriptions').value;
+
+        if (!fileInput.files.length) {
+          alert('Please upload a text file.');
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('textFile', fileInput.files[0]);
+        formData.append('numActors', numActors);
+        formData.append('voiceDescriptions', voiceDescriptions);
+
+        // Example: replace this URL with your real backend endpoint
+        const response = await fetch('/api/generate-audio', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          alert('Error generating audio.');
+          return;
+        }
+
+        const blob = await response.blob();
+        const audioUrl = URL.createObjectURL(blob);
+
+        document.getElementById('output').style.display = 'block';
+        document.getElementById('audioPlayer').src = audioUrl;
+      });
+    </script>
+  </body>
+</html>
