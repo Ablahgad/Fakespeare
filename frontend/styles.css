@@ -39,23 +39,28 @@ nav {
     display:flex;
     justify-content:right;
     width:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    height:100px;
 }
 #title-text{
     font-size:60px;
 }
 .header-text{
     color: rgb(255, 255, 254);
+    text-shadow: 3px 3px 3px black;
+
     text-decoration: none;
     font-size: 40px;
     padding:20px;
 }
-@media only screen and (maxsr-width:710){
+@media only screen and (max-width:770px){
     .header-text{
-        font-size:15px !important;
-        display:none;
+        font-size:30px !important;
     }
     #title-text{
-        font-size:15px !important;
+        font-size:30px !important;
     }
 }
 nav a:hover {
