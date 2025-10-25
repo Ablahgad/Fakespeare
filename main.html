@@ -1,26 +1,48 @@
 <!DOCTYPE html>
 <html class="no-js">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Text-to-Audio Generator</title>
-    <meta name="description" content="Upload text and generate audio with custom voices">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Upload text and generate audio with custom voices" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
       body {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
         margin: 0;
-        padding: 2rem;
       }
+
+      /* ---------- HEADER NAVIGATION ---------- */
+      header {
+        background-color: #007bff;
+        color: white;
+        padding: 1rem 0;
+      }
+      nav {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+      }
+      nav a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: bold;
+      }
+      nav a:hover {
+        text-decoration: underline;
+      }
+
+      /* ---------- PAGE CONTENT ---------- */
       .container {
         max-width: 600px;
         background: #fff;
-        margin: 0 auto;
+        margin: 2rem auto;
         padding: 2rem;
         border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
       h1 {
         text-align: center;
@@ -31,7 +53,9 @@
         margin-top: 1rem;
         font-weight: bold;
       }
-      input, textarea, button {
+      input,
+      textarea,
+      button {
         width: 100%;
         padding: 0.5rem;
         margin-top: 0.5rem;
@@ -52,35 +76,37 @@
         width: 100%;
         margin-top: 1rem;
       }
-      .browsehappy {
-        background: #ffcc00;
-        padding: 1rem;
-        text-align: center;
-        border-radius: 6px;
-      }
       .actor-description {
         margin-top: 0.5rem;
+      }
+
+      footer {
+        text-align: center;
+        padding: 1rem;
+        color: #555;
+        font-size: 0.9rem;
       }
     </style>
   </head>
 
   <body>
-    <!--[if lt IE 7]>
-      <p class="browsehappy">
-        You are using an <strong>outdated</strong> browser.
-        Please <a href="#">upgrade your browser</a> to improve your experience.
-      </p>
-    <![endif]-->
+    <!-- HEADER NAVIGATION -->
+    <header>
+      <nav>
+        <a href="main.html">Home</a>
+        <a href="about.html">About</a>
+      </nav>
+    </header>
 
     <div class="container">
       <h1>Text-to-Audio Generator</h1>
 
       <form id="audioForm">
         <label for="textFile">Upload Text File:</label>
-        <input type="file" id="textFile" accept=".txt" required>
+        <input type="file" id="textFile" accept=".txt" required />
 
         <label for="numActors">Number of Actors:</label>
-        <input type="number" id="numActors" min="1" value="1">
+        <input type="number" id="numActors" min="1" value="1" />
 
         <div id="voiceDescriptionsContainer">
           <label>Voice Descriptions:</label>
@@ -90,33 +116,37 @@
         <button type="submit">Generate Audio</button>
       </form>
 
-      <div id="output" style="display:none;">
+      <div id="output" style="display: none">
         <h2>Generated Audio</h2>
         <audio controls id="audioPlayer"></audio>
       </div>
     </div>
 
-    <script>
-      const form = document.getElementById('audioForm');
-      const numActorsInput = document.getElementById('numActors');
-      const voiceInputsContainer = document.getElementById('voiceInputs');
+    <footer>
+      &copy; 2025 Text-to-Audio App
+    </footer>
 
-      // Function to generate actor description boxes
+    <script>
+      const form = document.getElementById("audioForm");
+      const numActorsInput = document.getElementById("numActors");
+      const voiceInputsContainer = document.getElementById("voiceInputs");
+
+      // Generate actor description boxes dynamically
       function updateVoiceInputs() {
         const numActors = parseInt(numActorsInput.value) || 1;
-        voiceInputsContainer.innerHTML = ''; // Clear previous inputs
+        voiceInputsContainer.innerHTML = "";
 
         for (let i = 1; i <= numActors; i++) {
-          const label = document.createElement('label');
+          const label = document.createElement("label");
           label.textContent = `Actor ${i} Description:`;
 
-          const input = document.createElement('input');
-          input.type = 'text';
+          const input = document.createElement("input");
+          input.type = "text";
           input.name = `actor${i}`;
           input.placeholder = `e.g. Actor ${i}: calm female voice`;
 
-          const wrapper = document.createElement('div');
-          wrapper.classList.add('actor-description');
+          const wrapper = document.createElement("div");
+          wrapper.classList.add("actor-description");
           wrapper.appendChild(label);
           wrapper.appendChild(input);
 
@@ -124,51 +154,50 @@
         }
       }
 
-      // Initialize with one actor
+      // Initialize default
       updateVoiceInputs();
 
-      // Update actor inputs dynamically
-      numActorsInput.addEventListener('change', updateVoiceInputs);
+      numActorsInput.addEventListener("change", updateVoiceInputs);
 
       // Handle form submission
-      form.addEventListener('submit', async (e) => {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const fileInput = document.getElementById('textFile');
+        const fileInput = document.getElementById("textFile");
         if (!fileInput.files.length) {
-          alert('Please upload a text file.');
+          alert("Please upload a text file.");
           return;
         }
 
         const numActors = parseInt(numActorsInput.value);
         const formData = new FormData();
-        formData.append('textFile', fileInput.files[0]);
-        formData.append('numActors', numActors);
+        formData.append("textFile", fileInput.files[0]);
+        formData.append("numActors", numActors);
 
-        // Collect all voice descriptions
+        // Collect voice descriptions
         const voiceDescriptions = [];
         for (let i = 1; i <= numActors; i++) {
-          const desc = form[`actor${i}`].value || '';
+          const desc = form[`actor${i}`].value || "";
           voiceDescriptions.push(desc);
         }
-        formData.append('voiceDescriptions', JSON.stringify(voiceDescriptions));
+        formData.append("voiceDescriptions", JSON.stringify(voiceDescriptions));
 
         // Example backend endpoint
-        const response = await fetch('/api/generate-audio', {
-          method: 'POST',
+        const response = await fetch("/api/generate-audio", {
+          method: "POST",
           body: formData,
         });
 
         if (!response.ok) {
-          alert('Error generating audio.');
+          alert("Error generating audio.");
           return;
         }
 
         const blob = await response.blob();
         const audioUrl = URL.createObjectURL(blob);
 
-        document.getElementById('output').style.display = 'block';
-        document.getElementById('audioPlayer').src = audioUrl;
+        document.getElementById("output").style.display = "block";
+        document.getElementById("audioPlayer").src = audioUrl;
       });
     </script>
   </body>
