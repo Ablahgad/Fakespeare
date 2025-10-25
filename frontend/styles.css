@@ -6,13 +6,13 @@ body {
 
 /* ---------- HEADER NAVIGATION ---------- */
 header {
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/38/Parchment_texture_background.jpg');
+    background-image: url(https://images.unsplash.com/photo-1718140245752-ca3c1b52d015?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjY3fHxtZWRpZXZhbCUyMHBhaW50aW5nfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600);
     background-size: cover;
-    background-position: center;
-    color: #3b2b1c; /* deep brown ink color */
+    background-position: center ;
+    color: #c6a07c;
     padding: 2rem 0;
-    text-shadow: 1px 1px 2px #f0e6d2; /* subtle glow for readability */
-    border-bottom: 3px solid #d4b483; /* gold trim */
+    text-shadow: 1px 1px 2px #f0e6d2;
+    border-bottom: 3px solid #f2f2f1;
 }
 nav {
     display: flex;
@@ -20,7 +20,7 @@ nav {
     gap: 2rem;
 }
 nav a {
-    color: white;
+    color: rgb(75, 48, 1);
     text-decoration: none;
     font-size: 1.1rem;
 }
