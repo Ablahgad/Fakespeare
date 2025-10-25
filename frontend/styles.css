@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Almendra SC', serif;
     background-color: #f4f4f4;
     margin: 0;
 }
@@ -19,7 +19,6 @@ nav a {
     color: white;
     text-decoration: none;
     font-size: 1.1rem;
-    font-weight: bold;
 }
 nav a:hover {
     text-decoration: underline;
