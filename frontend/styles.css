@@ -4,7 +4,7 @@ html{
 }
 
 body {
-    font-family: 'Georgia', serif;
+    font-family: 'Almendra SC', serif;
     background-color: #f4f4f4;
     margin: 0;
 
@@ -21,24 +21,35 @@ body::-webkit-scrollbar {
 
 /* ---------- HEADER NAVIGATION ---------- */
 header {
-    font-family: 'Almendra SC', serif;
     background-image: url("fakespeare_header.jpg");
     background-size: cover;
     background-position: center ;
     color: #ede8e3;
-    padding: 2rem 0;
     text-shadow: 1px 1px 2px #f5f5f5;
     border-bottom: 3px solid #f2f2f1;
 }
 nav {
     display: flex;
-    justify-content: center;
+    align-items:center;
     gap: 2rem;
+    height:100px;
 }
-nav a {
+
+#header-right{
+    display:flex;
+    justify-content:right;
+    width:100%;
+}
+.header-text{
     color: rgb(255, 255, 254);
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 40px;
+    padding:20px;
+}
+@media only screen and (max-width:710){
+    .header-text{
+        font-size:15px !important;
+    }
 }
 nav a:hover {
     text-decoration: underline;
@@ -56,19 +67,16 @@ nav a:hover {
 }
 
 h1 {
-    font-family: 'Almendra SC', serif;
     text-align: center;
     margin-bottom: 1.5rem;
 }
 
 h2 {
-    font-family: 'Almendra SC', serif;
     text-align: center;
     margin-bottom: 1rem;
 }
 
 p, li {
-    font-family: 'Georgia', serif;
     line-height: 1.6;
     color: #333;
 }
@@ -78,7 +86,6 @@ ul {
 }
 
 label {
-    font-family: 'Almendra SC', serif;
     display: block;
     margin-top: 1rem;
     font-weight: bold;
@@ -133,7 +140,6 @@ audio {
 }
 
 .info-toggle {
-    font-family: 'Almendra SC', serif;
     cursor: pointer;
     color: #7a4b26; /* rich brown text */
     font-weight: bold;
