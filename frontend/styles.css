@@ -75,13 +75,22 @@ button {
     font-size: 1rem;
 }
 button {
-    background-color: #007bff;
-    color: white;
+    background-color: #7a4b26;   /* deep parchment-brown */
+    color: #fdfaf2;              /* soft cream text */
+    border: 2px solid #d4b483;   /* gold border */
+    border-radius: 8px;
+    font-family: 'Almendra SC', serif;
+    font-size: 1.1rem;
+    padding: 0.6rem 1rem;
     cursor: pointer;
-    margin-top: 1rem;
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px 2px #3b2b1c;
 }
+
 button:hover {
-    background-color: #0056b3;
+    background-color: #a06534;   /* warm bronze on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px rgba(212, 180, 131, 0.6);
 }
 audio {
     width: 100%;
