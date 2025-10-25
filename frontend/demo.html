@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Demo | Text-to-Audio Generator</title>
+    <meta name="description" content="Demo page for Text-to-Audio Generator" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Almendra+SC&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <!-- HEADER NAVIGATION -->
+    <header>
+      <nav>
+        <a href="main.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="demo.html" class="active">Demo</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h1>Demo: Sample Script and Audio</h1>
+      <p>
+        Below is a short example script and its generated audio. This demonstrates how your uploaded text will be converted into realistic speech.
+      </p>
+
+      <!-- Sample Script Box -->
+      <section class="demo-section">
+        <h2>Sample Script</h2>
+        <div id="sampleScript" class="script-box">
+          <p><strong>Actor 1 (Narrator):</strong> Welcome to the Text-to-Audio Generator demo.</p>
+          <p><strong>Actor 2 (Character):</strong> Wow, this voice sounds incredibly realistic!</p>
+          <p><strong>Actor 1:</strong> Indeed — our AI model brings your written dialogue to life.</p>
+        </div>
+      </section>
+
+      <!-- Sample Audio Player -->
+      <section class="demo-section">
+        <h2>Sample Audio</h2>
+        <audio controls id="demoAudio">
+          <source src="C:\Users\sumed\OneDrive\Documents\GitHub\SAS\TestingMultitalk\two_speaker.wav" type="audio/wav" />
+          Your browser does not support the audio element.
+        </audio>
+      </section>
+
+      <div class="back-home">
+        <a href="main.html" class="button">← Back to Home</a>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2025 Text-to-Audio App
+    </footer>
+  </body>
+</html>
