@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Text-to-Audio Generator</title>
+    <meta name="description" content="Upload text and generate audio with custom voices" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Almendra+SC&display=swap" rel="stylesheet">
+css
+Copy code
+
+  </head>
+
+  <body>
+    <!-- HEADER NAVIGATION -->
+    <header>
+      <nav>
+        <a href="main.html">Home</a>
+        <a href="about.html">About</a>
+      </nav>
+    </header>
+
+    <div class="container">
+      <h1>Text-to-Audio Generator</h1>
+
+      <form id="audioForm">
+        <label for="textFile">Upload Text File:</label>
+        <input type="file" id="textFile" accept=".txt,.docx" required />
+
+        <!-- File instructions tooltip -->
+        <span class="info-toggle" id="toggleInfo">Show file upload instructions ▼</span>
+        <div class="info-section info-content" id="fileInfo">
+          <ul>
+            <li><strong>File types:</strong> Only <code>.txt</code> and <code>.docx</code> are supported.</li>
+            <li><strong>Formatting:</strong> Use clear line breaks between paragraphs and dialogue for each character.</li>
+            <li><strong>Actor cues:</strong> Label lines or paragraphs with actor names (e.g., <code>Actor 1:</code> or <code>John:</code>).</li>
+            <li><strong>Text length:</strong> Keep sections concise for better voice quality.</li>
+            <li><strong>Special characters:</strong> Avoid excessive symbols or formatting that may confuse the model.</li>
+          </ul>
+        </div>
+
+        <label for="numActors">Number of Actors:</label>
+        <input type="number" id="numActors" min="1" value="1" />
+
+        <div id="voiceDescriptionsContainer">
+          <label>Voice Descriptions:</label>
+          <div id="voiceInputs"></div>
+        </div>
+
+        <button type="submit">Generate Audio</button>
+      </form>
+
+      <div id="output" style="display: none">
+        <h2>Generated Audio</h2>
+        <audio controls id="audioPlayer"></audio>
+      </div>
+    </div>
+
+    <footer>
+      &copy; 2025 Text-to-Audio App
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,116 @@
+body {
+    font-family: 'Almendra SC', serif;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+/* ---------- HEADER NAVIGATION ---------- */
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 1rem 0;
+}
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- PAGE CONTENT ---------- */
+.container {
+    max-width: 600px;
+    background: #fff;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+p, li {
+    line-height: 1.6;
+    color: #333;
+}
+
+ul {
+    margin-left: 1.2rem;
+}
+
+label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+input,
+textarea,
+button {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+button:hover {
+    background-color: #0056b3;
+}
+audio {
+    width: 100%;
+    margin-top: 1rem;
+}
+.actor-description {
+    margin-top: 0.5rem;
+}
+
+/* ---------- FILE UPLOAD INFO ---------- */
+.info-section {
+    background-color: #e7f3ff;
+    border-left: 4px solid #007bff;
+    padding: 0.8rem 1rem;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    color: #333;
+}
+.info-toggle {
+    cursor: pointer;
+    color: #007bff;
+    font-weight: bold;
+    margin-top: 0.5rem;
+    display: inline-block;
+}
+.info-content {
+    display: none;
+    margin-top: 0.5rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    color: #555;
+    font-size: 0.9rem;
+}
