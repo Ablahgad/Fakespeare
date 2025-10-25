@@ -151,35 +151,35 @@ class HiggsAudioModelClient:
         kv_cache_lengths: List[int] = [1024, 4096, 8192],  # Multiple KV cache sizes,
         use_static_kv_cache=False,
     ):
-        # # Use explicit device if provided, otherwise try CUDA/MPS/CPU
-        # if device_id is not None:
-        #     device = f"cuda:{device_id}"
-        #     self._device = device
-        # else:
-        #     if device is not None:
-        #         self._device = device
-        #     else:  # We get to choose the device
-        #         # Prefer CUDA over MPS (Apple Silicon GPU) over CPU if available
-        #         if torch.cuda.is_available():
-        #             self._device = "cuda:0"
-        #         elif torch.backends.mps.is_available():
-        #             self._device = "mps"
-        #         else:
-        #             self._device = "cpu"
+        # Use explicit device if provided, otherwise try CUDA/MPS/CPU
+        if device_id is not None:
+            device = f"cuda:{device_id}"
+            self._device = device
+        else:
+            if device is not None:
+                self._device = device
+            else:  # We get to choose the device
+                # Prefer CUDA over MPS (Apple Silicon GPU) over CPU if available
+                if torch.cuda.is_available():
+                    self._device = "cuda:0"
+                elif torch.backends.mps.is_available():
+                    self._device = "mps"
+                else:
+                    self._device = "cpu"
 
-        # logger.info(f"Using device: {self._device}")
-        # if isinstance(audio_tokenizer, str):
-        #     # For MPS, use CPU due to embedding operation limitations in quantization layers
-        #     audio_tokenizer_device = "cpu" if self._device == "mps" else self._device
-        #     self._audio_tokenizer = load_higgs_audio_tokenizer(audio_tokenizer, device=audio_tokenizer_device)
-        # else:
-        #     self._audio_tokenizer = audio_tokenizer
+        logger.info(f"Using device: {self._device}")
+        if isinstance(audio_tokenizer, str):
+            # For MPS, use CPU due to embedding operation limitations in quantization layers
+            audio_tokenizer_device = "cpu" if self._device == "mps" else self._device
+            self._audio_tokenizer = load_higgs_audio_tokenizer(audio_tokenizer, device=audio_tokenizer_device)
+        else:
+            self._audio_tokenizer = audio_tokenizer
 
-        # self._model = HiggsAudioModel.from_pretrained(
-        #     model_path,
-        #     device_map=self._device,
-        #     torch_dtype=torch.bfloat16,
-        # )
+        self._model = HiggsAudioModel.from_pretrained(
+            model_path,
+            device_map=self._device,
+            torch_dtype=torch.bfloat16,
+        )
         self._model.eval()
         self._kv_cache_lengths = kv_cache_lengths
         self._use_static_kv_cache = use_static_kv_cache
@@ -705,56 +705,56 @@ def main(
     )
 
 
-BOSON_API_KEY = os.getenv("BOSON_API_KEY")
+# BOSON_API_KEY = os.getenv("BOSON_API_KEY")
 
-    client = openai.Client(
-        api_key=BOSON_API_KEY,
-        base_url="https://hackathon.boson.ai/v1"
-    )
+# client = openai.Client(
+#         api_key=BOSON_API_KEY,
+#         base_url="https://hackathon.boson.ai/v1"
+# )
 
-    # for this api, we onlu support PCM format output
-    response = client.audio.speech.create(
-        model="higgs-audio-generation-Hackathon",
-        voice="belinda",
-        input=transcript,
-        response_format="pcm"
-    )
+#     # for this api, we onlu support PCM format output
+#     response = client.audio.speech.create(
+#         model="higgs-audio-generation-Hackathon",
+#         voice="belinda",
+#         input=transcript,
+#         response_format="pcm"
+#     )
 
-    # You can use these parameters to write PCM data to a WAV file
-    num_channels = 1        
-    sample_width = 2        
-    sample_rate = 24000   
+#     # You can use these parameters to write PCM data to a WAV file
+#     num_channels = 1        
+#     sample_width = 2        
+#     sample_rate = 24000   
 
-    pcm_data = response.content
+#     pcm_data = response.content
 
-    with wave.open('belinda_test.wav', 'wb') as wav:
-        wav.setnchannels(num_channels)
-        wav.setsampwidth(sample_width)
-        wav.setframerate(sample_rate)
-        wav.writeframes(pcm_data)
+#     with wave.open('belinda_test.wav', 'wb') as wav:
+#         wav.setnchannels(num_channels)
+#         wav.setsampwidth(sample_width)
+#         wav.setframerate(sample_rate)
+#         wav.writeframes(pcm_data)
 
 
-    logger.info("Chunks used for generation:")
-    for idx, chunk_text in enumerate(chunked_text):
-        logger.info(f"Chunk {idx}:")
-        logger.info(chunk_text)
-        logger.info("-----")
+#     logger.info("Chunks used for generation:")
+#     for idx, chunk_text in enumerate(chunked_text):
+#         logger.info(f"Chunk {idx}:")
+#         logger.info(chunk_text)
+#         logger.info("-----")
 
-    concat_wv, sr, text_output = model_client.generate(
-        messages=messages,
-        audio_ids=audio_ids,
-        chunked_text=chunked_text,
-        generation_chunk_buffer_size=generation_chunk_buffer_size,
-        temperature=temperature,
-        top_k=top_k,
-        top_p=top_p,
-        ras_win_len=ras_win_len,
-        ras_win_max_num_repeat=ras_win_max_num_repeat,
-        seed=seed,
-    )
+#     concat_wv, sr, text_output = model_client.generate(
+#         messages=messages,
+#         audio_ids=audio_ids,
+#         chunked_text=chunked_text,
+#         generation_chunk_buffer_size=generation_chunk_buffer_size,
+#         temperature=temperature,
+#         top_k=top_k,
+#         top_p=top_p,
+#         ras_win_len=ras_win_len,
+#         ras_win_max_num_repeat=ras_win_max_num_repeat,
+#         seed=seed,
+#     )
 
-    sf.write(out_path, concat_wv, sr)
-    logger.info(f"Wav file is saved to '{out_path}' with sample rate {sr}")
+#     sf.write(out_path, concat_wv, sr)
+#     logger.info(f"Wav file is saved to '{out_path}' with sample rate {sr}")
 
 
 if __name__ == "__main__":
