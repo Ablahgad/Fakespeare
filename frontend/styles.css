@@ -40,14 +40,21 @@ nav {
     justify-content:right;
     width:100%;
 }
+#title-text{
+    font-size:60px;
+}
 .header-text{
     color: rgb(255, 255, 254);
     text-decoration: none;
     font-size: 40px;
     padding:20px;
 }
-@media only screen and (max-width:710){
+@media only screen and (maxsr-width:710){
     .header-text{
+        font-size:15px !important;
+        display:none;
+    }
+    #title-text{
         font-size:15px !important;
     }
 }
