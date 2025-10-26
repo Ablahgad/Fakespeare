@@ -1,5 +1,6 @@
 openai
 click
+re
 flask
 flask_cors
 tempfile
