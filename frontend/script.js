@@ -45,18 +45,19 @@ if (info.style.display === "block") {
 
 // Handle form submission
 form.addEventListener("submit", async (e) => {
-e.preventDefault();
+    e.preventDefault();
 
-const fileInput = document.getElementById("textFile");
-if (!fileInput.files.length) {
-    alert("Please upload a text file.");
-    return;
-}
+    const fileInput = document.getElementById("textFile");
+    if (!fileInput.files.length) {
+        alert("Please upload a text file.");
+        return;
+    }
 
-const numActors = parseInt(numActorsInput.value);
-const formData = new FormData();
-formData.append("textFile", fileInput.files[0]);
-formData.append("numActors", numActors);
+    const numActors = parseInt(numActorsInput.value);
+    const formData = new FormData();
+    formData.append("textFile", fileInput.files[0]);
+    formData.append("numActors", numActors);
+});
 
 // Collect voice descriptions
 const voiceDescriptions = [];
@@ -64,39 +65,72 @@ for (let i = 1; i <= numActors; i++) {
     const desc = form[`actor${i}`].value || "";
     voiceDescriptions.push(desc);
 }
-formData.append("voiceDescriptions", JSON.stringify(voiceDescriptions));
+// formData.append("voiceDescriptions", JSON.stringify(voiceDescriptions));
 
-// Example backend endpoint
-const response = await fetch("/api/generate-audio", {
-    method: "POST",
-    body: formData,
-});
 
-if (!response.ok) {
-    alert("Error generating audio.");
+// Ensure this script is included with <script src="script.js"></script> in your HTML
+document.getElementById("submit-button").addEventListener("click", async () => {
+  const fileInput = document.getElementById("textFile");
+  const file = fileInput.files[0];
+
+  const loading_text = document.getElementById("loading-text");
+  loading_text.style.display = "block";
+  
+  if (!file) {
+    alert("Please select a file first!");
     return;
-}
+  }
 
-const blob = await response.blob();
-const audioUrl = URL.createObjectURL(blob);
+  const formData = new FormData();
+  formData.append("file", file);
 
-document.getElementById("output").style.display = "block";
-document.getElementById("audioPlayer").src = audioUrl;
+  try {
+    // Send the file to the Flask backend
+    const response = await fetch("http://127.0.0.1:5000/generate_audio", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error("Request failed");
+
+    // Get the audio as a blob
+    const audioBlob = await response.blob();
+    const audioUrl = URL.createObjectURL(audioBlob);
+
+    const audioSource = document.getElementById("audio-output");
+    audioSource.src = audioUrl;
+
+    const audioPlayer = document.getElementById("audioPlayer");
+    audioPlayer.load();
+    audioPlayer.play();
+
+    const output = document.getElementById("output");
+    output.style.display = "block";
+    loading_text.style.display = "none";
+
+    // Display the uploaded transcript text
+    // const textContent = await file.text();
+    // document.getElementById("inputted-script").textContent = textContent;
+
+  } catch (err) {
+    console.error("Error:", err);
+    alert("There was an error generating the audio. See console for details.");
+  }
 });
 
-// Load sample script for demo page
-document.addEventListener("DOMContentLoaded", () => {
-    const scriptDisplay = document.getElementById("scriptDisplay");
+// // Load sample script for demo page
+// document.addEventListener("DOMContentLoaded", () => {
+//     const scriptDisplay = document.getElementById("scriptDisplay");
 
-    fetch("TestingMultitalk/tomorrow.txt")
-        .then(response => {
-            if (!response.ok) throw new Error("Failed to load script file.");
-            return response.text();
-        })
-        .then(text => {
-            scriptDisplay.textContent = text;
-        })
-        .catch(error => {
-            scriptDisplay.textContent = "Error loading demo script: " + error.message;
-        });
-});
+//     fetch("../TestingMultitalk/tomorrow.txt")
+//         .then(response => {
+//             if (!response.ok) throw new Error("Failed to load script file.");
+//             return response.text();
+//         })
+//         .then(text => {
+//             scriptDisplay.textContent = text;
+//         })
+//         .catch(error => {
+//             scriptDisplay.textContent = "Error loading demo script: " + error.message;
+//         });
+// });
