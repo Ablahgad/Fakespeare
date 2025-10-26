@@ -151,79 +151,79 @@ class HiggsAudioModelClient:
         kv_cache_lengths: List[int] = [1024, 4096, 8192],  # Multiple KV cache sizes,
         use_static_kv_cache=False,
     ):
-        # Use explicit device if provided, otherwise try CUDA/MPS/CPU
-        if device_id is not None:
-            device = f"cuda:{device_id}"
-            self._device = device
-        else:
-            if device is not None:
-                self._device = device
-            else:  # We get to choose the device
-                # Prefer CUDA over MPS (Apple Silicon GPU) over CPU if available
-                if torch.cuda.is_available():
-                    self._device = "cuda:0"
-                elif torch.backends.mps.is_available():
-                    self._device = "mps"
-                else:
-                    self._device = "cpu"
+        # # Use explicit device if provided, otherwise try CUDA/MPS/CPU
+        # if device_id is not None:
+        #     device = f"cuda:{device_id}"
+        #     self._device = device
+        # else:
+        #     if device is not None:
+        #         self._device = device
+        #     else:  # We get to choose the device
+        #         # Prefer CUDA over MPS (Apple Silicon GPU) over CPU if available
+        #         if torch.cuda.is_available():
+        #             self._device = "cuda:0"
+        #         elif torch.backends.mps.is_available():
+        #             self._device = "mps"
+        #         else:
+        #             self._device = "cpu"
 
-        logger.info(f"Using device: {self._device}")
-        if isinstance(audio_tokenizer, str):
-            # For MPS, use CPU due to embedding operation limitations in quantization layers
-            audio_tokenizer_device = "cpu" if self._device == "mps" else self._device
-            self._audio_tokenizer = load_higgs_audio_tokenizer(audio_tokenizer, device=audio_tokenizer_device)
-        else:
-            self._audio_tokenizer = audio_tokenizer
+        # logger.info(f"Using device: {self._device}")
+    #     if isinstance(audio_tokenizer, str):
+    #         # For MPS, use CPU due to embedding operation limitations in quantization layers
+    #         audio_tokenizer_device = "cpu" if self._device == "mps" else self._device
+    #         self._audio_tokenizer = load_higgs_audio_tokenizer(audio_tokenizer, device=audio_tokenizer_device)
+    #     else:
+    #         self._audio_tokenizer = audio_tokenizer
 
-        self._model = HiggsAudioModel.from_pretrained(
-            model_path,
-            device_map=self._device,
-            torch_dtype=torch.bfloat16,
-        )
-        self._model.eval()
-        self._kv_cache_lengths = kv_cache_lengths
-        self._use_static_kv_cache = use_static_kv_cache
+    #     self._model = HiggsAudioModel.from_pretrained(
+    #         model_path,
+    #         device_map=self._device,
+    #         torch_dtype=torch.bfloat16,
+    #     )
+    #     self._model.eval()
+    #     self._kv_cache_lengths = kv_cache_lengths
+    #     self._use_static_kv_cache = use_static_kv_cache
 
-        self._tokenizer = AutoTokenizer.from_pretrained(model_path)
-        self._config = AutoConfig.from_pretrained(model_path)
-        self._max_new_tokens = max_new_tokens
-        self._collator = HiggsAudioSampleCollator(
-            whisper_processor=None,
-            audio_in_token_id=self._config.audio_in_token_idx,
-            audio_out_token_id=self._config.audio_out_token_idx,
-            audio_stream_bos_id=self._config.audio_stream_bos_id,
-            audio_stream_eos_id=self._config.audio_stream_eos_id,
-            encode_whisper_embed=self._config.encode_whisper_embed,
-            pad_token_id=self._config.pad_token_id,
-            return_audio_in_tokens=self._config.encode_audio_in_tokens,
-            use_delay_pattern=self._config.use_delay_pattern,
-            round_to=1,
-            audio_num_codebooks=self._config.audio_num_codebooks,
-        )
-        self.kv_caches = None
-        if use_static_kv_cache:
-            self._init_static_kv_cache()
+    #     self._tokenizer = AutoTokenizer.from_pretrained(model_path)
+    #     self._config = AutoConfig.from_pretrained(model_path)
+    #     self._max_new_tokens = max_new_tokens
+    #     self._collator = HiggsAudioSampleCollator(
+    #         whisper_processor=None,
+    #         audio_in_token_id=self._config.audio_in_token_idx,
+    #         audio_out_token_id=self._config.audio_out_token_idx,
+    #         audio_stream_bos_id=self._config.audio_stream_bos_id,
+    #         audio_stream_eos_id=self._config.audio_stream_eos_id,
+    #         encode_whisper_embed=self._config.encode_whisper_embed,
+    #         pad_token_id=self._config.pad_token_id,
+    #         return_audio_in_tokens=self._config.encode_audio_in_tokens,
+    #         use_delay_pattern=self._config.use_delay_pattern,
+    #         round_to=1,
+    #         audio_num_codebooks=self._config.audio_num_codebooks,
+    #     )
+    #     self.kv_caches = None
+    #     if use_static_kv_cache:
+    #         self._init_static_kv_cache()
 
-    def _init_static_kv_cache(self):
-        cache_config = copy.deepcopy(self._model.config.text_config)
-        cache_config.num_hidden_layers = self._model.config.text_config.num_hidden_layers
-        if self._model.config.audio_dual_ffn_layers:
-            cache_config.num_hidden_layers += len(self._model.config.audio_dual_ffn_layers)
-        # A list of KV caches for different lengths
-        self.kv_caches = {
-            length: StaticCache(
-                config=cache_config,
-                max_batch_size=1,
-                max_cache_len=length,
-                device=self._model.device,
-                dtype=self._model.dtype,
-            )
-            for length in sorted(self._kv_cache_lengths)
-        }
-        # Capture CUDA graphs for each KV cache length
-        if "cuda" in self._device:
-            logger.info(f"Capturing CUDA graphs for each KV cache length")
-            self._model.capture_model(self.kv_caches.values())
+    # def _init_static_kv_cache(self):
+    #     cache_config = copy.deepcopy(self._model.config.text_config)
+    #     cache_config.num_hidden_layers = self._model.config.text_config.num_hidden_layers
+    #     if self._model.config.audio_dual_ffn_layers:
+    #         cache_config.num_hidden_layers += len(self._model.config.audio_dual_ffn_layers)
+    #     # A list of KV caches for different lengths
+    #     self.kv_caches = {
+    #         length: StaticCache(
+    #             config=cache_config,
+    #             max_batch_size=1,
+    #             max_cache_len=length,
+    #             device=self._model.device,
+    #             dtype=self._model.dtype,
+    #         )
+    #         for length in sorted(self._kv_cache_lengths)
+    #     }
+    #     # Capture CUDA graphs for each KV cache length
+    #     if "cuda" in self._device:
+    #         logger.info(f"Capturing CUDA graphs for each KV cache length")
+    #         self._model.capture_model(self.kv_caches.values())
 
     def _prepare_kv_caches(self):
         for kv_cache in self.kv_caches.values():

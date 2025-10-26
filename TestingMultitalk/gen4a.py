@@ -435,22 +435,6 @@ def main(
     with open("output.wav", "wb") as f:
         f.write(audio_bytes)
 
-    # concat_wv, sr, text_output = client.chat.completions.create(
-    #     model="higgs-audio-generation-Hackathon",
-    #     messages=messages,
-    #     audio_ids=audio_ids,
-    #     chunked_text=chunked_text,
-    #     generation_chunk_buffer_size=generation_chunk_buffer_size,
-    #     temperature=temperature,
-    #     top_k=top_k,
-    #     top_p=top_p,
-    #     ras_win_len=ras_win_len,
-    #     ras_win_max_num_repeat=ras_win_max_num_repeat,
-    #     seed=seed,
-    # )
-
-    # sf.write(out_path, concat_wv, sr)
-
 
 if __name__ == "__main__":
     main()
