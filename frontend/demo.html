@@ -31,16 +31,26 @@
 
       <!-- Sample Script Box -->
       <section class="demo-section">
-        <h2>Sample Script</h2>
-        <div id="scriptDisplay" class="script-box">Loading script...</div>
+        <div class="script-box">
+          <pre>
+[Scene: A futuristic recording studio.]
+
+Narrator: Welcome to the Text-to-Audio Generator demo.
+Engineer: The AI is ready to process the script.
+Narrator: Excellent. Let's show our visitors how natural it sounds.
+Engineer: Starting the voice synthesis now...
+[Soft chime]
+Narrator: And just like that, the words come to life.
+          </pre>
+        </div>
       </section>
 
       <!-- Sample Audio Player -->
       <section class="demo-section">
         <h2>Sample Audio</h2>
         <audio controls id="demoAudio">
-          <source src="TestingMultitalk\two_speaker.wav" type="audio/wav" />
-          Your browser does not support the audio element.
+            <source src="two_speaker_demo.wav" type="audio/wav" />
+            Your browser does not support the audio element.
         </audio>
       </section>
     </main>
@@ -48,7 +58,5 @@
     <footer>
       Have Fun
     </footer>
-    
-    <script src="script.js"></script>
   </body>
 </html>

@@ -138,6 +138,35 @@ audio {
     margin-top: 0.5rem;
 }
 
+/* ---------- DEMO PAGE STYLES ---------- */
+.script-box {
+  background: #f9fafc;
+  border-left: 5px solid #7a4b26;
+  padding: 1rem 1.2rem;
+  margin-top: 1rem;
+  border-radius: 6px;
+  color: #222;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+.script-box pre {
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  white-space: pre-wrap; /* preserve indentation & wrapping */
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Audio player styling */
+audio {
+  margin-top: 1rem;
+  border-radius: 4px;
+  background: #f9f9f9;
+  width: 100%;
+}
+
+
 /* ---------- FILE UPLOAD INFO ---------- */
 .info-section {
     background-color: #e9dec4; /* warm parchment background */

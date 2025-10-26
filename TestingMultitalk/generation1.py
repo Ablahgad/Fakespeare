@@ -30,8 +30,8 @@ def b64(path):
     return base64.b64encode(open(path, "rb").read()).decode("utf-8")
 
 def main():
-    if os.path.exists(r"C:\Users\ablah\repos\SAS\TestingMultitalk\tomorrow.txt"):
-        with open(r"C:\Users\ablah\repos\SAS\TestingMultitalk\tomorrow.txt", "r", encoding="utf-8") as f:
+    if os.path.exists(r"TestingMultitalk\tomorrow.txt"):
+        with open(r"TestingMultitalk\tomorrow.txt", "r", encoding="utf-8") as f:
             transcript = f.read().strip()
 
     # if len(speaker_tags) > 1:
