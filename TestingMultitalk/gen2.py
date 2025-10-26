@@ -200,7 +200,7 @@ def prepare_generation_context_api(
 @click.option(
     "--transcript",
     type=str,
-    default= "tom2.txt",
+    default= "fight.txt",
     help="The prompt to use for generation. If not set, we will use a default prompt.",
 )
 @click.option(
@@ -239,8 +239,36 @@ def main(transcript, scene_prompt, ref_audio_dir = "./ref_audio"):
     client = OpenAI(api_key=BOSON_API_KEY, base_url="https://hackathon.boson.ai/v1")
 
     # Load dialogue text
-    with open(transcript, "r", encoding="utf-8") as f:
-        dialogue_text = f.read().strip()
+    if os.path.exists(r"TestingMultitalk\tomorrow.txt"):
+        with open(r"TestingMultitalk\tomorrow.txt", "r", encoding="utf-8") as f:
+            transcript = f.read().strip()
+
+    transcript = transcript.replace("(", " ")
+    transcript = transcript.replace(")", " ")
+    transcript = transcript.replace("°F", " degrees Fahrenheit")
+    transcript = transcript.replace("°C", " degrees Celsius")
+
+    for tag, replacement in [
+        ("[laugh]", "<SE>[Laughter]</SE>"),
+        ("[humming start]", "<SE_s>[Humming]</SE_s>"),
+        ("[humming end]", "<SE_e>[Humming]</SE_e>"),
+        ("[music start]", "<SE_s>[Music]</SE_s>"),
+        ("[music end]", "<SE_e>[Music]</SE_e>"),
+        ("[music]", "<SE>[Music]</SE>"),
+        ("[sing start]", "<SE_s>[Singing]</SE_s>"),
+        ("[sing end]", "<SE_e>[Singing]</SE_e>"),
+        ("[applause]", "<SE>[Applause]</SE>"),
+        ("[cheering]", "<SE>[Cheering]</SE>"),
+        ("[cough]", "<SE>[Cough]</SE>"),
+    ]:
+        transcript = transcript.replace(tag, replacement)
+
+    transcript = transcript.replace("[", "<|speaker_id_start|>")
+    transcript = transcript.replace("]", "<|speaker_id_end|>")
+    lines = transcript.split("\n")
+
+    transcript = "\n".join([" ".join(line.split()) for line in lines if line.strip()])
+    transcript = transcript.strip()
 
     # Load scene prompt
     if scene_prompt.lower() == "":
@@ -266,7 +294,7 @@ Oh, Wow, that was really scary. And if you don't mind me saying, if that don't w
         client=client,
         scene_prompt=scene_text,
         reference_map=reference_map,
-        dialogue_text=dialogue_text,
+        dialogue_text=transcript,
         ref_audio_dir=ref_audio_dir
     )
 
@@ -283,7 +311,7 @@ Oh, Wow, that was really scary. And if you don't mind me saying, if that don't w
         extra_body={"top_k": 50},
     )
 
-    print(json.dumps(messages, indent=2))
+    # print(json.dumps(messages, indent=2))
     
     # Save audio
     audio_b64 = response.choices[0].message.audio.data
