@@ -68,15 +68,7 @@ def main():
             
             {"role": "system", "content": "You are an AI assistant designed to convert text into speech. If the user's message includes a [SPEAKER*] tag, do not read out the tag and generate speech for the following text, using the specified voice. If no speaker tag is present, select a suitable voice on your own."},
             {"role": "user", "content": transcript},
-            {"role": "system", "content": f"""Generate realistic multi-speaker audio.
-             
-                <|scene_desc_start|>
-                It is raining heavily, and thunder rolls in the distance.
-                <|scene_desc_end|>
-
-                <|speaker_id_start|>SPEAKER1<|speaker_id_end|> masculine voice
-                <|speaker_id_start|>SPEAKER2<|speaker_id_end|> feminine voice
-                """}
+            {"role": "system", "content": f"Generate realistic multi-speaker audio. "}
         ],
         modalities=["text", "audio"],
         max_completion_tokens=4096,
@@ -86,6 +78,8 @@ def main():
         stop=["<|eot_id|>", "<|end_of_text|>", "<|audio_eos|>"],
         extra_body={"top_k": 50},
     )
+
+    print(transcript)
 
     audio_b64 = resp.choices[0].message.audio.data
 
