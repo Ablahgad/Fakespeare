@@ -10,10 +10,6 @@ import copy
 import torchaudio
 import tqdm
 import yaml
-import openai
-import os
-import wave
-
 
 from loguru import logger
 from boson_multimodal.serve.serve_engine import HiggsAudioServeEngine, HiggsAudioResponse
@@ -43,6 +39,45 @@ AUDIO_PLACEHOLDER_TOKEN = "<|__AUDIO_PLACEHOLDER__|>"
 MULTISPEAKER_DEFAULT_SYSTEM_MESSAGE = """You are an AI assistant designed to convert text into speech.
 If the user's message includes a [SPEAKER*] tag, do not read out the tag and generate speech for the following text, using the specified voice.
 If no speaker tag is present, select a suitable voice on your own."""
+
+
+def normalize_chinese_punctuation(text):
+    """
+    Convert Chinese (full-width) punctuation marks to English (half-width) equivalents.
+    """
+    # Mapping of Chinese punctuation to English punctuation
+    chinese_to_english_punct = {
+        "，": ", ",  # comma
+        "。": ".",  # period
+        "：": ":",  # colon
+        "；": ";",  # semicolon
+        "？": "?",  # question mark
+        "！": "!",  # exclamation mark
+        "（": "(",  # left parenthesis
+        "）": ")",  # right parenthesis
+        "【": "[",  # left square bracket
+        "】": "]",  # right square bracket
+        "《": "<",  # left angle quote
+        "》": ">",  # right angle quote
+        "“": '"',  # left double quotation
+        "”": '"',  # right double quotation
+        "‘": "'",  # left single quotation
+        "’": "'",  # right single quotation
+        "、": ",",  # enumeration comma
+        "—": "-",  # em dash
+        "…": "...",  # ellipsis
+        "·": ".",  # middle dot
+        "「": '"',  # left corner bracket
+        "」": '"',  # right corner bracket
+        "『": '"',  # left double corner bracket
+        "』": '"',  # right double corner bracket
+    }
+
+    # Replace each Chinese punctuation with its English counterpart
+    for zh_punct, en_punct in chinese_to_english_punct.items():
+        text = text.replace(zh_punct, en_punct)
+
+    return text
 
 
 def prepare_chunk_text(
@@ -481,13 +516,13 @@ def prepare_generation_context(scene_prompt, ref_audio, ref_audio_in_system_mess
 @click.option(
     "--transcript",
     type=str,
-    default= r"C:\Users\ablah\repos\higgs-audio\TestingMultitalk\en_argument.txt",
+    default=r"C:\Users\ablah\repos\higgs-audio\TestingMultitalk\en_argument.txt",
     help="The prompt to use for generation. If not set, we will use a default prompt.",
 )
 @click.option(
     "--scene_prompt",
     type=str,
-    default=f"{CURR_DIR}/scene_prompts/quiet_indoor.txt",
+    default=r"C:\Users\ablah\repos\higgs-audio\TestingMultitalk\quiet_indoor.txt",
     help="The scene description prompt to use for generation. If not set, or set to `empty`, we will leave it to empty.",
 )
 @click.option(
@@ -663,6 +698,8 @@ def main(
         scene_prompt = None
 
     speaker_tags = sorted(set(pattern.findall(transcript)))
+    # Perform some basic normalization
+    transcript = normalize_chinese_punctuation(transcript)
     # Other normalizations (e.g., parentheses and other symbols. Will be improved in the future)
     transcript = transcript.replace("(", " ")
     transcript = transcript.replace(")", " ")
@@ -704,57 +741,27 @@ def main(
         chunk_max_num_turns=chunk_max_num_turns,
     )
 
+    logger.info("Chunks used for generation:")
+    for idx, chunk_text in enumerate(chunked_text):
+        logger.info(f"Chunk {idx}:")
+        logger.info(chunk_text)
+        logger.info("-----")
 
-# BOSON_API_KEY = os.getenv("BOSON_API_KEY")
+    concat_wv, sr, text_output = model_client.generate(
+        messages=messages,
+        audio_ids=audio_ids,
+        chunked_text=chunked_text,
+        generation_chunk_buffer_size=generation_chunk_buffer_size,
+        temperature=temperature,
+        top_k=top_k,
+        top_p=top_p,
+        ras_win_len=ras_win_len,
+        ras_win_max_num_repeat=ras_win_max_num_repeat,
+        seed=seed,
+    )
 
-# client = openai.Client(
-#         api_key=BOSON_API_KEY,
-#         base_url="https://hackathon.boson.ai/v1"
-# )
-
-#     # for this api, we onlu support PCM format output
-#     response = client.audio.speech.create(
-#         model="higgs-audio-generation-Hackathon",
-#         voice="belinda",
-#         input=transcript,
-#         response_format="pcm"
-#     )
-
-#     # You can use these parameters to write PCM data to a WAV file
-#     num_channels = 1        
-#     sample_width = 2        
-#     sample_rate = 24000   
-
-#     pcm_data = response.content
-
-#     with wave.open('belinda_test.wav', 'wb') as wav:
-#         wav.setnchannels(num_channels)
-#         wav.setsampwidth(sample_width)
-#         wav.setframerate(sample_rate)
-#         wav.writeframes(pcm_data)
-
-
-#     logger.info("Chunks used for generation:")
-#     for idx, chunk_text in enumerate(chunked_text):
-#         logger.info(f"Chunk {idx}:")
-#         logger.info(chunk_text)
-#         logger.info("-----")
-
-#     concat_wv, sr, text_output = model_client.generate(
-#         messages=messages,
-#         audio_ids=audio_ids,
-#         chunked_text=chunked_text,
-#         generation_chunk_buffer_size=generation_chunk_buffer_size,
-#         temperature=temperature,
-#         top_k=top_k,
-#         top_p=top_p,
-#         ras_win_len=ras_win_len,
-#         ras_win_max_num_repeat=ras_win_max_num_repeat,
-#         seed=seed,
-#     )
-
-#     sf.write(out_path, concat_wv, sr)
-#     logger.info(f"Wav file is saved to '{out_path}' with sample rate {sr}")
+    sf.write(out_path, concat_wv, sr)
+    logger.info(f"Wav file is saved to '{out_path}' with sample rate {sr}")
 
 
 if __name__ == "__main__":

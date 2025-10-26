@@ -4,6 +4,7 @@
 - make sure docx files work
 - create readme DONE
     - need to explain what project actually is!!
+    - can add screenshots
 - testing functionality of audio generation
     - making the different voices more consistent
     - testing background noise + cheering, laughing, ect.

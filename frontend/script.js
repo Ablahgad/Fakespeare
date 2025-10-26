@@ -73,8 +73,9 @@ document.getElementById("submit-button").addEventListener("click", async () => {
   const fileInput = document.getElementById("textFile");
   const file = fileInput.files[0];
 
-  const loading_text = document.getElementById("loading-text");
-  loading_text.style.display = "block";
+  const button = document.getElementById("submit-button");
+  button.innerText = "Loading...";
+
   
   if (!file) {
     alert("Please select a file first!");
@@ -106,11 +107,8 @@ document.getElementById("submit-button").addEventListener("click", async () => {
 
     const output = document.getElementById("output");
     output.style.display = "block";
-    loading_text.style.display = "none";
+    button.innerText = "Regenerate Audio";
 
-    // Display the uploaded transcript text
-    // const textContent = await file.text();
-    // document.getElementById("inputted-script").textContent = textContent;
 
   } catch (err) {
     console.error("Error:", err);

@@ -9,7 +9,7 @@ from flask_cors import CORS
 import tempfile
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 BOSON_API_KEY = os.getenv("BOSON_API_KEY")
 
@@ -57,7 +57,7 @@ def main():
 
     transcript = "\n".join([" ".join(line.split()) for line in lines if line.strip()])
     transcript = transcript.strip()
-
+    print(transcript)
 
     BOSON_API_KEY = os.getenv("BOSON_API_KEY")
     client = OpenAI(api_key=BOSON_API_KEY, base_url="https://hackathon.boson.ai/v1")
@@ -88,6 +88,7 @@ def main():
     )
 
     audio_b64 = resp.choices[0].message.audio.data
+    open("output.wav", "wb").write(base64.b64decode(audio_b64))
 
     audio_bytes = base64.b64decode(audio_b64)
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
