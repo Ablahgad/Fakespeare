@@ -19,6 +19,7 @@ from typing import List
 from typing import Optional
 from dataclasses import asdict
 import torch
+import base64
 
 CURR_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -128,7 +129,7 @@ def _build_system_message_with_audio_prompt(system_message):
     )
     return ret
 
-def prepare_generation_context(scene_prompt, ref_audio, ref_audio_in_system_message, audio_tokenizer, speaker_tags):
+def prepare_generation_context(scene_prompt, ref_audio, ref_audio_in_system_message, speaker_tags):
     """Prepare the context for generation.
 
     The context contains the system message, user message, assistant message, and audio prompt if any.
@@ -355,23 +356,13 @@ def prepare_generation_context(scene_prompt, ref_audio, ref_audio_in_system_mess
     help="Whether to use static KV cache for faster generation. Only works when using GPU.",
 )
 def main(
-    audio_tokenizer,
-    max_new_tokens,
     transcript,
     scene_prompt,
-    temperature,
-    top_k,
-    top_p,
-    ras_win_len,
-    ras_win_max_num_repeat,
     ref_audio,
     ref_audio_in_system_message,
     chunk_method,
     chunk_max_word_num,
     chunk_max_num_turns,
-    generation_chunk_buffer_size,
-    seed,
-    out_path,
 ):
 
     pattern = re.compile(r"\[(SPEAKER\d+)\]") # do we need this?
@@ -428,21 +419,40 @@ def main(
         chunk_max_num_turns=chunk_max_num_turns,
     )
 
-    concat_wv, sr, text_output = client.chat.completions.create(
+    # Call Boson model to generate audio
+    resp = client.chat.completions.create(
         model="higgs-audio-generation-Hackathon",
         messages=messages,
-        audio_ids=audio_ids,
-        chunked_text=chunked_text,
-        generation_chunk_buffer_size=generation_chunk_buffer_size,
-        temperature=temperature,
-        top_k=top_k,
-        top_p=top_p,
-        ras_win_len=ras_win_len,
-        ras_win_max_num_repeat=ras_win_max_num_repeat,
-        seed=seed,
+        modalities=["text", "audio"],
+        max_completion_tokens=4096,
+        temperature=1.0,
+        top_p=0.95,
+        stream=False  # non-streaming, full audio output
     )
 
-    sf.write(out_path, concat_wv, sr)
+    # Extract audio from the response
+    audio_base64 = resp.choices[0].message["audio"]["data"]
+    audio_bytes = base64.b64decode(audio_base64)
+
+    # Save audio to WAV file
+    with open("output.wav", "wb") as f:
+        f.write(audio_bytes)
+
+    # concat_wv, sr, text_output = client.chat.completions.create(
+    #     model="higgs-audio-generation-Hackathon",
+    #     messages=messages,
+    #     audio_ids=audio_ids,
+    #     chunked_text=chunked_text,
+    #     generation_chunk_buffer_size=generation_chunk_buffer_size,
+    #     temperature=temperature,
+    #     top_k=top_k,
+    #     top_p=top_p,
+    #     ras_win_len=ras_win_len,
+    #     ras_win_max_num_repeat=ras_win_max_num_repeat,
+    #     seed=seed,
+    # )
+
+    # sf.write(out_path, concat_wv, sr)
 
 
 if __name__ == "__main__":
