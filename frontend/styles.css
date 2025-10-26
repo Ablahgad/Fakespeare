@@ -34,6 +34,9 @@ nav {
     gap: 2rem;
     height:100px;
 }
+a {
+    color:#7a4b26;
+}
 
 #header-right{
     display:flex;

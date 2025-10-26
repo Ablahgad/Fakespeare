@@ -8,5 +8,6 @@
 
 - testing :(
 - background change + aesthetic changes
+    - making the choose file button look better
 
 - adding in reference audios for specific actor

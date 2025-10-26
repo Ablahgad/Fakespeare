@@ -36,10 +36,10 @@ const info = document.getElementById("fileInfo");
 toggle.addEventListener("click", () => {
 if (info.style.display === "block") {
     info.style.display = "none";
-    toggle.textContent = "Show file upload instructions ▼";
+    toggle.textContent = "Hark! What file type can I upload? ▼";
 } else {
     info.style.display = "block";
-    toggle.textContent = "Hide file upload instructions ▲";
+    toggle.textContent = "Away, away, ye file type instructions! ▲";
 }
 });
 
