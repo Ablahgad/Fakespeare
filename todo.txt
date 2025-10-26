@@ -1,0 +1,12 @@
+- integrate using flask
+- testing functionality of audio generation
+    - making the different voices more consistent
+    - testing background noise + cheering, laughing, ect.
+    - working out the kinks
+- taking the txt/docx file and pulling apart the inputs we want
+    - different speakers, personalities, scene prompt
+
+- testing :(
+- background change + aesthetic changes
+
+- adding in reference audios for specific actor
