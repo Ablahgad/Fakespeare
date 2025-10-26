@@ -17,5 +17,6 @@
     - website icon
     - parchment paper
     - little chime/harp when it first loads (add event listner for first load and tab close)
+    - adding hamburger menu view for when the page gets too small
 
 - adding in reference audios for specific actor
