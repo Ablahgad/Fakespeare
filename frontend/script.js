@@ -14,7 +14,7 @@ for (let i = 1; i <= numActors; i++) {
     const input = document.createElement("input");
     input.type = "text";
     input.name = `actor${i}`;
-    input.placeholder = `e.g. Actor ${i}: calm female voice`;
+    input.placeholder = `e.g. Actor ${i}: somber female voice`;
 
     const wrapper = document.createElement("div");
     wrapper.classList.add("actor-description");
