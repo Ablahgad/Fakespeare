@@ -1,12 +1,17 @@
-- integrate using flask
+- CLEAN UP THE CODE AND DIRECTORIES BEFORE SUBMITTING
+
+- integrate using flask DONE
+- make sure docx files work
+- create readme DONE
+    - need to explain what project actually is!!
 - testing functionality of audio generation
     - making the different voices more consistent
     - testing background noise + cheering, laughing, ect.
     - working out the kinks
 
 - home page functionality
-    - add upload button to actually upload the txt file
-    - add download button for the generated audio file
+    - add upload button to actually upload the txt file - DONE
+    - add download button for the generated audio file  - DONE (button already exists, we can the generated audio look prettier but it is good for what it is)
 
 - taking the txt/docx file and pulling apart the inputs we want
     - different speakers, personalities, scene prompt

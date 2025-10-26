@@ -29,7 +29,7 @@
       <h1>Script-to-Scene Generator</h1>
       <form id="audioForm">
         <label for="textFile">Upload your script:</label>
-        <input type="file" id="textFile" accept=".txt,.docx" required />
+        <input type="file" id="textFile" accept=".txt" required />
 
         <!-- File instructions tooltip -->
         <span class="info-toggle" id="toggleInfo">Hark! What File Type Can I Upload?▼</span>
@@ -60,7 +60,7 @@
         <h2>Generated Audio</h2>
         <audio controls id="audioPlayer">
             <source id="audio-output" src="" type="audio/wav">
-            Please upload a .txt or .docx file and generate the audio first
+            Please upload a .txt file and generate the audio first
         </audio>
         <p id="inputted-script"></p>
       </div>
