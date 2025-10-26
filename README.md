@@ -1,11 +1,11 @@
-#Fakespeare
-##About This App
+# Fakespeare
+## About This App
 We at Fakespeare believe that a good script is the backbone of a good performance. Listen to your script with the actors of your choice with the Text-to-Audio Generator. Upload a text file, specify multiple voice actors, describe their voices, and generate high-quality spoken audio.
 
-##How It Works
+## How It Works
 After you upload a text file, the app scrapes and modifies the content into a format suitable for Boson AI's Higgs Audio Generatoin model. This model then generates the audio file using the descriptions you provided for each actor.
 
-##Instructions for Uploaded Files
+## Instructions for Uploaded Files
 To ensure the best results, please follow these guidelines when uploading files:
 
 File types: Only .txt files are supported.
@@ -15,7 +15,7 @@ Text length: Keep individual sections concise for better voice quality. Very lon
 Special characters: Avoid excessive symbols or formatting that may confuse the model.
 Following these instructions ensures that the uploaded text is properly parsed and that each voice actor sounds natural in the final audio.
 
-##Instructions for running the code
+## Instructions for running the code
 Run the file by running the following into the terminal, note that the BosonAI API key must be set as an environment variable:
 
 ```
