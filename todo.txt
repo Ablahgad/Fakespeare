@@ -1,7 +1,6 @@
 - CLEAN UP THE CODE AND DIRECTORIES BEFORE SUBMITTING
 
 - integrate using flask DONE
-- make sure docx files work
 - create readme DONE
     - need to explain what project actually is!!
 - testing functionality of audio generation
@@ -16,12 +15,11 @@
 - taking the txt/docx file and pulling apart the inputs we want
     - different speakers, personalities, scene prompt
 
-- testing :(
+- testing
 - background change + aesthetic changes
-    - making the choose file button look better
+    - making the choose file button look better DONE
     - website icon
-    - parchment paper
-    - little chime/harp when it first loads (add event listner for first load and tab close)
+    - parchment paper DONE
     - adding hamburger menu view for when the page gets too small
 
 - adding in reference audios for specific actor

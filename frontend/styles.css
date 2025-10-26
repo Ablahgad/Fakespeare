@@ -121,7 +121,6 @@ button {
     width: 100%;
     padding: 0.5rem;
     margin-top: 0.5rem;
-    border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
 }
@@ -131,7 +130,7 @@ button {
     border: 2px solid #d4b483;   /* gold border */
     border-radius: 8px;
     font-family: 'Almendra SC', serif;
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     padding: 0.6rem 1rem;
     cursor: pointer;
     transition: all 0.3s ease;

@@ -24,4 +24,4 @@ pip install -r requirements.txt
 python ./backend/App.py
 ```
 
-Then host the website locally through a live server.
+Then host the main.html file in the frontend folder locally through a live server.
