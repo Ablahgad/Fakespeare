@@ -5,6 +5,8 @@ html{
 
 body {
     font-family: 'Georgia', serif;
+    background-image: url("f_bg.jpg");
+    background-size: cover;
     background-color: #f4f4f4;
     margin: 0;
 
@@ -76,7 +78,7 @@ nav a:hover {
 /* ---------- PAGE CONTENT ---------- */
 .container {
     width:80vw;
-    background: #d2c59f; /* soft parchment tone */
+    background: #e2d8c3; /* soft parchment tone */
     margin: 2rem auto;
     padding: 2rem;
     border-radius: 12px;
