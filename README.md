@@ -1,4 +1,5 @@
 # Fakespeare
+A submission for the 2025 Boson AI Hackathon.
 ## About This App
 We at Fakespeare believe that a good script is the backbone of a good performance. Listen to your script with the actors of your choice with the Text-to-Audio Generator. Upload a text file, specify multiple voice actors, describe their voices, and generate high-quality spoken audio.
 
