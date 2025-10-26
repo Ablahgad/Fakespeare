@@ -3,10 +3,18 @@
     - making the different voices more consistent
     - testing background noise + cheering, laughing, ect.
     - working out the kinks
+
+- home page functionality
+    - add upload button to actually upload the txt file
+    - add download button for the generated audio file
+
 - taking the txt/docx file and pulling apart the inputs we want
     - different speakers, personalities, scene prompt
 
 - testing :(
 - background change + aesthetic changes
+    - website icon
+    - parchment paper
+    - little chime/harp when it first loads (add event listner for first load and tab close)
 
 - adding in reference audios for specific actor
